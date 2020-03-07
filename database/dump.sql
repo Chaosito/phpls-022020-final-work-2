@@ -1,12 +1,8 @@
-CREATE DATABASE `final-work2` CHARACTER SET utf8 COLLATE utf8_general_ci; 
+CREATE DATABASE `final-work2` CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-CREATE TABLE `final-work2`.`users`( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `mail` VARCHAR(50), `pass_hash` VARCHAR(40), `salt` VARCHAR(4), `first_name` VARCHAR(20), `description` VARCHAR(255), `birthdate` DATE, `is_del` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (`id`) ); 
+CREATE TABLE `final-work2`.`users`( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `mail` VARCHAR(50), `pass_hash` VARCHAR(40), `salt` VARCHAR(4), `first_name` VARCHAR(20), `description` VARCHAR(255), `birthdate` DATE, `is_del` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (`id`), UNIQUE INDEX (`mail`) );
 
-ALTER TABLE `final-work2`.`users` ADD UNIQUE INDEX (`mail`); 
-
-CREATE TABLE `final-work2`.`photos`( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `file_path` VARCHAR(255) NOT NULL, `file_name` VARCHAR(255), `mime_type` VARCHAR(255), `is_del` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (`id`) ); 
-
-ALTER TABLE `final-work2`.`photos` ADD INDEX (`user_id`); 
+CREATE TABLE `final-work2`.`photos`( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `file_path` VARCHAR(255) NOT NULL, `file_name` VARCHAR(255), `mime_type` VARCHAR(255), `is_del` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (`id`), INDEX (`user_id`) );
 
 CREATE USER 'sqluserforlf'@'%' IDENTIFIED BY '5q1u5erf0r1f'; 
 
