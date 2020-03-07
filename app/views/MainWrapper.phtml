@@ -9,7 +9,13 @@ $curUser = $this->curUser;
 <head>
     <meta charset="UTF-8">
     <title><?=$this->pageTitle;?></title>
+    <link
+            href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+            media="screen" rel="stylesheet" type="text/css" >
+
     <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 </head>
 <body>
 <h1><?=$this->pageTitle;?></h1>
@@ -19,9 +25,18 @@ $curUser = $this->curUser;
 <?php else: ?>
     <a href="/logout">Logout</a> | <a href="/profile">My profile</a> | <a href="/main/allusers">All users</a> | <a href="/photo/upload">Upload a photo</a> |
 <?php endif; ?>
-<a href="/not_found">404 Page</a><hr>
+<a href="/main/faker" title="Может занять продолжительное время (с тек. настройками ~15 sec, зависит от множества факторов), т.к. получает изобрежения по сети"><span>(!)</span> Fill DB</a> | <a href="/not_found">404 Page</a><hr>
 <?php
     include $this->pathToTemplate;
 ?>
 </body>
 </html>
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    a > span {
+        color:red;
+    }
+</style>
