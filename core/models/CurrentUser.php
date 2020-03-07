@@ -7,6 +7,7 @@ class CurrentUser extends User
 {
     private $logged = false;
     public $id;
+    public $avatarId;
     public $mail;
     public $firstName;
     public $description;

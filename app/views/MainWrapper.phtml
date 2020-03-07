@@ -2,7 +2,7 @@
 <?php
 /** @var \core\models\CurrentUser $curUser */
 $curUser = $this->curUser;
-
+$avatarImg = ($curUser->avatarId > 0) ? "<img src='/photo/thumb/?id={$curUser->avatarId}}' style='width:48px;height:48px;'/>" : "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,10 +15,9 @@ $curUser = $this->curUser;
 
     <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
 </head>
 <body>
-<h1><?=$this->pageTitle;?></h1>
+<h1><?=$avatarImg.$this->pageTitle;?></h1>
 <a href="/">Main</a> |
 <?php if (!$this->curUser->isLogged()): ?>
     <a href="/login">Sign in</a> | <a href="/register">Sign up</a> |

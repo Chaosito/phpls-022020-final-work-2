@@ -55,6 +55,7 @@ class Photo extends \core\Controller
         $imagesCount = count($arrPhoto['name']);
         $uploadErrors = [];
         $successMessages = [];
+        $lastFileId = 0;
         for ($i = 0; $i < $imagesCount; $i++) {
             // create valid array
 
@@ -72,7 +73,7 @@ class Photo extends \core\Controller
                 } else {
                     $objFile->setOwnerId($this->curUser->getId());
                     $objFile->moveUploadedFile();
-                    $objFile->saveToDb();
+                    $lastFileId = $objFile->saveToDb();
                     $successMessages[] = "Файл `".$objFile->getName()."` загружен успешно!";
                 }
             }
@@ -85,6 +86,7 @@ class Photo extends \core\Controller
 
         if (count($successMessages)) {
             $this->view->successMessages = $successMessages;
+            $this->curUser->updateAvatarId($lastFileId);
         }
     }
 }

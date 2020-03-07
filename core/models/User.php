@@ -7,6 +7,7 @@ class User
 {
     /* Fields in `Users` table */
     protected $id = 0;
+    protected $avatarId = 0;
     protected $mail = '';
     protected $passHash = '';
     protected $salt = '';
@@ -26,6 +27,7 @@ class User
             return false;
         }
         $this->id = $tableUsers['id'];
+        $this->avatarId = $tableUsers['avatar_id'];
         $this->mail = $tableUsers['mail'];
         $this->passHash = $tableUsers['pass_hash'];
         $this->salt = $tableUsers['salt'];
@@ -49,5 +51,11 @@ class User
     {
         $userFromDb = DB::run("SELECT * FROM users WHERE mail = ? LIMIT 1;", [$mail])->fetch();
         return $this->fetchModel($userFromDb);
+    }
+
+    public function updateAvatarId($fileId)
+    {
+        DB::run("UPDATE users SET avatar_id = ? WHERE id = ? LIMIT 1;", [$fileId, $this->id]);
+        $this->avatarId = $fileId;
     }
 }

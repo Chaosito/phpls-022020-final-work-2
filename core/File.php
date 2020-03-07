@@ -124,6 +124,7 @@ class File
             DB::run("INSERT INTO photos (user_id, file_path, file_name, mime_type) VALUES (?, ?, ?, ?)", [
                 $this->userId, $this->newPath, $this->name, $this->getFileMimeType()
             ]);
+            return DB::lastInsertId();
         }
     }
 

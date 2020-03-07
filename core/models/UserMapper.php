@@ -23,11 +23,11 @@ class UserMapper extends User
     {
         DB::run("
             INSERT INTO 
-                users (mail, pass_hash, salt, first_name, description, birthdate, is_del)
+                users (avatar_id, mail, pass_hash, salt, first_name, description, birthdate, is_del)
             VALUES
-                (?, ?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?, ?)
         ", [
-            $user->mail, $user->passHash, $user->salt, $user->firstName,
+            $user->avatarId, $user->mail, $user->passHash, $user->salt, $user->firstName,
             $user->description, $user->birthdate, $user->isDel
         ]);
         $this->id = DB::lastInsertId();
@@ -38,13 +38,13 @@ class UserMapper extends User
             UPDATE 
                 users 
             SET 
-                mail = ?, pass_hash = ?, salt = ?, first_name = ?, 
+                avatar_id = ?, mail = ?, pass_hash = ?, salt = ?, first_name = ?, 
                 description = ?, birthdate = ?, is_del = ? 
             WHERE 
                 id = ? 
             LIMIT 1;
         ", [
-            $user->mail, $user->passHash, $user->salt, $user->firstName,
+            $user->avatarId, $user->mail, $user->passHash, $user->salt, $user->firstName,
             $user->description, $user->birthdate, $user->isDel, $user->id
         ]);
     }

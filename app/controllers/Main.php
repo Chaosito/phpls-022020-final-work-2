@@ -56,6 +56,7 @@ class Main extends \core\Controller
 
             $imagesCount = mt_rand(0, self::FAKE_IMAGES_PER_USER_MAX);
 
+            $lastFileId = 0;
             for ($j = 0; $j < $imagesCount; $j++) {
                 $imageFaker = new ImageFaker(self::FAKE_IMG_WIDTH, self::FAKE_IMG_HEIGHT);
                 $tempPathForImage = sys_get_temp_dir().DIRECTORY_SEPARATOR.Security::generateString('filename', 20);
@@ -70,11 +71,12 @@ class Main extends \core\Controller
                 $objFile = new \core\File($emulatedFile);
                 $objFile->setOwnerId($userMapper->getId());
                 $objFile->moveUploadedFile();
-                $objFile->saveToDb();
+                $lastFileId = $objFile->saveToDb();
             }
             $usersForView[] = array(
                 $emulatedForm['first_name'], $emulatedForm['mail'], $emulatedForm['password'], $imagesCount
             );
+            $objUser->updateAvatarId($lastFileId);
         }
         $this->view->usersData = $usersForView;
     }

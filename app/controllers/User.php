@@ -96,7 +96,8 @@ class User extends \core\Controller
             if ($objFile->isSended()) {
                 $objFile->setOwnerId($userMapper->getId());
                 $objFile->moveUploadedFile();
-                $objFile->saveToDb();
+                $fileId = $objFile->saveToDb();
+                $objUser->updateAvatarId($fileId);
             }
             // Можно сразу авторизовать, как на всех современных сайтах, но мы не будем этого делать
 //            $objUser->login();
