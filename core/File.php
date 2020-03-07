@@ -75,7 +75,11 @@ class File
         $this->newPath = "images/{$newName}";
         $thumbPath = "images/thumbs/{$newName}";
 
-        @move_uploaded_file($this->tmpName, Context::getInstance()->getProjectPath().$this->newPath);
+        // Используем copy&unlink, потому что move_uploaded_file не захотела перемещать наши файлы созданные фейкером.
+        // т.к. она предназначена именно для перемещения файлов загруженных пользователями по HTTP;
+        copy($this->tmpName, Context::getInstance()->getProjectPath().$this->newPath);
+        unlink($this->tmpName);
+        //move_uploaded_file($this->tmpName, Context::getInstance()->getProjectPath().$this->newPath);
         $this->createThumbnail($thumbPath);
     }
 
