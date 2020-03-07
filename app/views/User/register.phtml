@@ -1,0 +1,28 @@
+<?php if (is_array($this->viewErrors) && count($this->viewErrors)): ?>
+    <div style="color:red;padding:10px;">
+        <?php foreach($this->viewErrors as $value): ?>
+            <div>• <?=$value;?></div>
+        <?php endforeach;?>
+    </div>
+<?php endif; ?>
+
+<form method="POST" enctype="multipart/form-data">
+    <table cellpadding="3">
+        <tr>
+            <td><label><b>First Name:</b><br><input type="text" name="first_name" maxlength="20" placeholder="Your first name" value="<?=$this->first_name;?>" /></label></td>
+            <td><label><b>Mail:</b><br><input type="text" name="mail" maxlength="50" placeholder="Your mail" value="<?=$this->mail;?>" /></label></td>
+        </tr>
+        <tr>
+            <td><label><b>Password:</b><br><input type="password" name="password" maxlength="255" placeholder="Password" value="123123" /></label></td>
+            <td><label><b>Re-Password:</b><br><input type="password" name="repassword" maxlength="255" placeholder="Retype password" value="123123" /></label></td>
+        </tr>
+        <tr>
+            <td><label><b>birthdate:</b><br><input type="text" name="birthdate" maxlength="10" placeholder="DD.MM.YYYY" value="<?=$this->birthdate;?>" /></label></td>
+            <td><label><b>Description:</b><br><input type="text" name="description" maxlength="255" placeholder="About you" value="<?=$this->description;?>" /></label></td>
+        </tr>
+        <tr>
+            <td><label><b>Photo:</b><br><input type="file" name="photo" /></label></td>
+            <td><br><input type="submit" value="Sign up" /></td>
+        </tr>
+    </table>
+</form>

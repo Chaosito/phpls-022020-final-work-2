@@ -1,0 +1,21 @@
+<b>Id:</b> <?=$this->curUser->id;?><br>
+<b>Mail:</b> <?=$this->curUser->mail;?><br>
+<b>Name:</b> <?=$this->curUser->firstName;?><br>
+<b>Descr:</b> <?=$this->curUser->description;?><br>
+<b>Birthdate:</b> <?=$this->curUser->birthdate;?><br><br>
+
+<h2>Uploaded photos:</h2>
+<div class="container-photos">
+<?php foreach($this->photos as $photo):?>
+    <div><a href="/photo/view/?id=<?=$photo['id'];?>" target="_blank"><img src="/photo/thumb/?id=<?=$photo['id'];?>" /></a></div>
+<?php endforeach; ?>
+</div>
+
+<style>
+    .container-photos {
+        width:1000px;
+    }
+    .container-photos > div {
+        display: inline-block;
+    }
+</style>
