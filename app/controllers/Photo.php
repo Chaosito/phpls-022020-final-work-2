@@ -44,11 +44,9 @@ class Photo extends \core\Controller
 
     public function uploadAction()
     {
-        $this->pageTitle = 'My profile';
+        $this->pageTitle = 'Upload photos';
         $filesVars = Context::getInstance()->getRequest()->getFilesHttpVars();
         $arrPhoto = $filesVars['photo'];
-//        print '<pre>';
-//        print_r($filesVars);
 
         if (!isset($arrPhoto['name'][0]) || !count($arrPhoto['name'])) {
             return false;
