@@ -22,45 +22,37 @@ class Application
     
     public function run()
     {
-        try {
-            $this->init();
+        $this->init();
 
-            $router = $this->context->getRouter();
-            $router->route();
-            
-            $controllerFileName = 'app\controllers\\'.$router->getControllerName();
-            
-            if (!class_exists($controllerFileName)) {
-                throw new Error404("Контроллер `{$controllerFileName}` не найден!");
-            }
+        $router = $this->context->getRouter();
+        $router->route();
 
-            /** @var Controller $controllerObj */
-            $controllerObj = new $controllerFileName();
-            $actionMethodName = $router->getActionName();
+        $controllerFileName = 'app\controllers\\'.$router->getControllerName();
 
-            if (!method_exists($controllerObj, $actionMethodName)) {
-                throw new Error404("Метод `{$actionMethodName}` не найден в контроллере `{$controllerFileName}`!");
-            }
+        if (!class_exists($controllerFileName)) {
+            throw new Error404("Контроллер `{$controllerFileName}` не найден!");
+        }
 
-            $view = new View();
-            $view->setWrapperPath("../app/views/MainWrapper.phtml");
-            $view->setTemplatePath("../app/views/".$router->getControllerName()."/".$router->getActionToken().".phtml");
+        /** @var Controller $controllerObj */
+        $controllerObj = new $controllerFileName();
+        $actionMethodName = $router->getActionName();
 
-            $controllerObj->view = $view;
-            $controllerObj->doFirst();
-            $controllerObj->$actionMethodName();
+        if (!method_exists($controllerObj, $actionMethodName)) {
+            throw new Error404("Метод `{$actionMethodName}` не найден в контроллере `{$controllerFileName}`!");
+        }
 
-            $view->setPageTitle($controllerObj->getPageTitle());
+        $view = new View();
+        $view->setWrapperPath("../app/views/MainWrapper.phtml");
+        $view->setTemplatePath("../app/views/".$router->getControllerName()."/".$router->getActionToken().".phtml");
 
-            if ($controllerObj->needRender()) {
-                echo $view->render();
-            }
-        } catch (Error404 $e) {
-            header('HTTP/1.0 404 Not Found');
-            header('Location: /404.html');
-        } catch (\Exception $e) {
-            header('HTTP/1.0 404 Not Found');
-            trigger_error($e->getMessage(), E_USER_ERROR);
+        $controllerObj->view = $view;
+        $controllerObj->doFirst();
+        $controllerObj->$actionMethodName();
+
+        $view->setPageTitle($controllerObj->getPageTitle());
+
+        if ($controllerObj->needRender()) {
+            echo $view->render();
         }
     }
 
