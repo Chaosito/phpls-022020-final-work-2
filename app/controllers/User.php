@@ -126,7 +126,6 @@ class User extends \core\Controller
     public function profileAction()
     {
         $this->pageTitle = 'My profile';
-        /** @var \app\models\User $objUser */
         $objUser = new \app\models\User();
         $this->view->photos = $objUser->getUploadedFiles($this->curUser->getId());
     }

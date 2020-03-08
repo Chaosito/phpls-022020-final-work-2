@@ -72,12 +72,12 @@ class File
     public function moveUploadedFile()
     {
         $newName = CoreSecurity::generateString('filename', 32).'.'.$this->ext;
-        $this->newPath = "images/{$newName}";
-        $thumbPath = "images/thumbs/{$newName}";
+        $this->newPath = "uploads/{$newName}";
+        $thumbPath = "uploads/thumbs/{$newName}";
 
         // Используем copy&unlink, потому что move_uploaded_file не захотела перемещать наши файлы созданные фейкером.
         // т.к. она предназначена именно для перемещения файлов загруженных пользователями по HTTP;
-        copy($this->tmpName, Context::getInstance()->getProjectPath().$this->newPath);
+        copy($this->tmpName, Context::getInstance()->getProjectPath().'public/'.$this->newPath);
         unlink($this->tmpName);
         //move_uploaded_file($this->tmpName, Context::getInstance()->getProjectPath().$this->newPath);
         $this->createThumbnail($thumbPath);
@@ -85,7 +85,7 @@ class File
 
     private function createThumbnail($thumbPath)
     {
-        $filePath = ($this->newPath != '') ? Context::getInstance()->getProjectPath().$this->newPath : $this->tmpName;
+        $filePath = ($this->newPath != '') ? Context::getInstance()->getProjectPath().'public/'.$this->newPath : $this->tmpName;
 
         // create an image manager instance with favored driver
         $manager = new ImageManager(array('driver' => 'imagick'));
@@ -94,7 +94,7 @@ class File
             $constraint->aspectRatio();
         });
 
-        $image->save(Context::getInstance()->getProjectPath().$thumbPath);
+        $image->save(Context::getInstance()->getProjectPath().'public/'.$thumbPath);
     }
     
     private function getAllowedExtensions()
@@ -109,7 +109,7 @@ class File
     
     private function getFileMimeType()
     {
-        $filePath = ($this->newPath != '') ? Context::getInstance()->getProjectPath().$this->newPath : $this->tmpName;
+        $filePath = ($this->newPath != '') ? Context::getInstance()->getProjectPath().'public/'.$this->newPath : $this->tmpName;
         return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filePath);
     }
     
@@ -120,7 +120,7 @@ class File
     
     public function saveToDb()
     {
-        if (file_exists(Context::getInstance()->getProjectPath().$this->newPath) && $this->userId > 0) {
+        if (file_exists(Context::getInstance()->getProjectPath().'public/'.$this->newPath) && $this->userId > 0) {
             DB::run("INSERT INTO photos (user_id, file_path, file_name, mime_type) VALUES (?, ?, ?, ?)", [
                 $this->userId, $this->newPath, $this->name, $this->getFileMimeType()
             ]);

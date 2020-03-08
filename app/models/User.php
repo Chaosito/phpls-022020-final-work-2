@@ -85,10 +85,19 @@ class User extends \core\models\User
 
     public function getUploadedFiles($userId)
     {
-        return CoreDB::run(
-            "SELECT id, file_name FROM photos WHERE user_id = ? AND is_del = 0",
+        $photos = CoreDB::run(
+            "SELECT file_path FROM photos WHERE user_id = ? AND is_del = 0",
             [$userId]
         )->fetchAll();
+
+        foreach ($photos as $key => $photo) {
+            $photos[$key]['thumb_path'] = str_replace(
+                'uploads/',
+                'uploads/thumbs/',
+                $photo['file_path']
+            );
+        }
+        return $photos;
     }
 
     public function getAllUsers($sorting = 'ASC')

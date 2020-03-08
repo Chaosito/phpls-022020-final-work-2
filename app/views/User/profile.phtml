@@ -7,7 +7,7 @@
 <h2>Uploaded photos:</h2>
 <div class="container-photos">
 <?php foreach($this->photos as $photo):?>
-    <div><a href="/photo/view/?id=<?=$photo['id'];?>" target="_blank"><img src="/photo/thumb/?id=<?=$photo['id'];?>" /></a></div>
+    <div><a href="<?=$photo['file_path'];?>" target="_blank"><img src="<?=$photo['thumb_path'];?>" /></a></div>
 <?php endforeach; ?>
 </div>
 

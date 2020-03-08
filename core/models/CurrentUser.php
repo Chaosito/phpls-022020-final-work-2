@@ -8,6 +8,7 @@ class CurrentUser extends User
     private $logged = false;
     public $id;
     public $avatarId;
+    public $avatarPath;
     public $mail;
     public $firstName;
     public $description;
@@ -28,6 +29,14 @@ class CurrentUser extends User
 
         if (!$this->id || $this->isDel) {
             return false;
+        }
+
+        if ($this->avatarId > 0) {
+            $this->avatarPath = DB::run(
+                "SELECT file_path FROM photos WHERE id = ? LIMIT 1;",
+                [$this->avatarId]
+            )->fetchColumn();
+            $this->avatarPath = str_replace('uploads/', 'uploads/thumbs/', $this->avatarPath);
         }
 
         $_SESSION['user_id'] = $this->id;

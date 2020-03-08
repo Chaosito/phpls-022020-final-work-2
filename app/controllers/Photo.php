@@ -11,37 +11,6 @@ class Photo extends \core\Controller
         Context::getInstance()->getRouter()->redirectTo('/');
     }
 
-    public function viewAction()
-    {
-        $this->readPhoto();
-    }
-
-    public function thumbAction()
-    {
-        $this->readPhoto(1);
-    }
-
-    private function readPhoto($thumb = false)
-    {
-        $this->render = false;
-        $httpVars = Context::getInstance()->getRequest()->getRequestHttpVars();
-        if ((int)$httpVars['id'] == 0) {
-            Context::getInstance()->getRouter()->redirectTo('/');
-        }
-
-        $photoPath = \core\DB::run(
-            "SELECT file_path FROM photos WHERE id = ? AND is_del = 0 LIMIT 1;",
-            [$httpVars['id']]
-        )->fetchColumn();
-
-        $manager = new ImageManager(array('driver' => 'imagick'));
-
-        $photoPath = ($thumb) ? str_replace('images/', 'images/thumbs/', $photoPath) : $photoPath;
-
-        $image = $manager->make(Context::getInstance()->getProjectPath().$photoPath);
-        echo $image->response('png', 90);
-    }
-
     public function uploadAction()
     {
         $this->pageTitle = 'Upload photos';

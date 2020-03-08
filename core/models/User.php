@@ -8,6 +8,7 @@ class User
     /* Fields in `Users` table */
     protected $id = 0;
     protected $avatarId = 0;
+    protected $avatarPath = '';
     protected $mail = '';
     protected $passHash = '';
     protected $salt = '';

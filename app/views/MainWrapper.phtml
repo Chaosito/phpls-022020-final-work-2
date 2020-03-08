@@ -2,7 +2,9 @@
 <?php
 /** @var \core\models\CurrentUser $curUser */
 $curUser = $this->curUser;
-$avatarImg = ($curUser->avatarId > 0) ? "<img src='/photo/thumb/?id={$curUser->avatarId}}' style='width:48px;height:48px;'/>" : "";
+$avatarImg = ($curUser->avatarId > 0 && $curUser->avatarPath)
+    ? "<img src='/{$curUser->avatarPath}' style='width:48px;height:48px;'/>"
+    : "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
