@@ -23,7 +23,8 @@ class CurrentUser extends User
     {
         if (
             empty($_SESSION[self::KEY_USER_SESSION]) &&
-            empty($_COOKIE[self::KEY_MAIL_COOKIE]) && empty($_COOKIE[self::KEY_PASS_COOKIE)
+            empty($_COOKIE[self::KEY_MAIL_COOKIE]) &&
+            empty($_COOKIE[self::KEY_PASS_COOKIE])
         ) {
             return;
         }
