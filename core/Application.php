@@ -26,8 +26,7 @@ class Application
 
         $router = $this->context->getRouter();
         $router->route();
-
-        $controllerFileName = 'app\controllers\\'.$router->getControllerName();
+        $controllerFileName = $router->getControllerPath();
 
         if (!class_exists($controllerFileName)) {
             throw new Error404("Контроллер `{$controllerFileName}` не найден!");

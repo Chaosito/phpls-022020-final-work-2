@@ -3,6 +3,7 @@ namespace core;
 
 class Router
 {
+    const DEFAULT_CONTROLLERS_PATH = 'app\controllers\\';
     const DEFAULT_CONTROLLER = 'main';
     const DEFAULT_ACTION = 'index';
     
@@ -56,6 +57,11 @@ class Router
     public function getControllerName()
     {
         return $this->controllerName;
+    }
+
+    public function getControllerPath()
+    {
+        return self::DEFAULT_CONTROLLERS_PATH.$this->getControllerName();
     }
     
     public function getActionName()
