@@ -1,7 +1,7 @@
 {
-    "name": "first/mvc",
+    "name": "chaosito/mvc",
     "type": "project",
-    "description": "My first MVC project",
+    "description": "Final work #2",
     "require": {
         "php": "^7.2",
         "intervention/image": "^2.5",
