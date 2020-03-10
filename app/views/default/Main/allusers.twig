@@ -1,0 +1,33 @@
+{% include 'header.twig' %}
+
+{% set sortBy = view.sorting | upper == 'DESC' ? 'ASC' : 'DESC' %}
+{% set linkVal = sortBy == 'ASC' ? '&uarr;' : '&darr;' %}
+
+<table border="1" cellspacing="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Mail</th>
+        <th>Name</th>
+        <th>Birthdate</th>
+        <th><a href='/main/allusers/?sort={{ sortBy }}'>Ages {{ linkVal | raw }}</a></th>
+        <th>Adult</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% if view.users %}
+            {% for user in view.users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.mail }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.birthdate }}</td>
+                    <td>{{ user.ages }}</td>
+                    <td>{{ user.ages > 18 ? 'Совершеннолетний' : 'Несовершеннолетний' }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+{% include 'footer.twig' %}

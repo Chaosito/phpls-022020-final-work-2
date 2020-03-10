@@ -1,0 +1,5 @@
+{% include 'header.twig' %}
+
+<h2>Hello{{ view.curUser.isLogged() ? ", #{view.curUser.firstName}": "!" }}</h2>
+
+{% include 'footer.twig' %}

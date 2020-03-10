@@ -1,0 +1,62 @@
+{% include 'header.twig' %}
+
+{% if view.viewErrors %}
+    <div class="block-errors">
+        {% for error in view.viewErrors %}
+            <div>• {{ error }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if view.successMessages %}
+    <div class="block-success">
+        {% for msg in view.successMessages %}
+            <div>• {{ msg }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    <table cellpadding="3">
+        <thead>
+        <tr>
+            <td><b>Photos:</b> (May be multiple)</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input type="file" name="photo[]" multiple="multiple" /></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td><br><input type="submit" value=">>> Upload <<<" /></td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('form').on('change', 'input[name^=photo]', function(event) {
+            event.preventDefault();
+            if ($('input[name^=photo]:last').val() != '') {
+                let newButton = '<tr><td><input type="file" name="photo[]" multiple="multiple"></td></tr>';
+                $(this).parent().parent().parent().append(newButton);
+            }
+        });
+    })
+</script>
+
+<style>
+    div.block-errors {
+        color:red;
+        padding:10px;
+    }
+    div.block-success {
+        color:green;
+        padding:10px;
+    }
+</style>
+
+{% include 'footer.twig' %}

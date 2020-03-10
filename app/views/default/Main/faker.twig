@@ -1,0 +1,16 @@
+{% include 'header.twig' %}
+
+{% if view.usersData %}
+    Users generated!<br>
+    Use this data to login:<hr>
+
+    {% for user in view.usersData %}
+        First name: {{ user[0] }}<br>
+        Mail: {{ user[1] }}<br>
+        Pass: {{ user[2] | escape }}<br>
+        Generated images count: {{ user[3] }}<br><hr>
+    {% endfor %}
+
+{% endif %}
+
+{% include 'footer.twig' %}

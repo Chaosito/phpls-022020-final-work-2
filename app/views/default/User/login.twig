@@ -1,0 +1,30 @@
+{% include 'header.twig' %}
+
+{% if view.viewErrors %}
+    <div class="block-errors">
+        {% for error in view.viewErrors %}
+            <div>• {{ error }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="POST">
+    <table cellpadding="3">
+        <tr>
+            <td><label><b>Mail:</b><br><input type="text" name="mail" maxlength="50" placeholder="Your mail" value="{{ view.mail }}" /></label></td>
+            <td><label><b>Password:</b><br><input type="password" name="password" maxlength="255" placeholder="Password" value="" /></label></td>
+            <td><label><br><input type="checkbox" name="remember" value="1" />Remember me</label></td>
+            <td><label><br><input type="submit" value="Sign in" /></label></td>
+            <input type="hidden" value="1" name="from_login" />
+        </tr>
+    </table>
+</form>
+
+<style>
+    div.block-errors {
+        color:red;
+        padding:10px;
+    }
+</style>
+
+{% include 'footer.twig' %}
