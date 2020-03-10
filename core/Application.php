@@ -41,8 +41,9 @@ class Application
         }
 
         $view = new View();
-        $view->setWrapperPath("../app/views/MainWrapper.phtml");
-        $view->setTemplatePath("../app/views/".$router->getControllerName()."/".$router->getActionToken().".phtml");
+
+//         connects header & footer via this theme
+//         $view->setTheme('default');
 
         $controllerObj->view = $view;
         $controllerObj->doFirst();
