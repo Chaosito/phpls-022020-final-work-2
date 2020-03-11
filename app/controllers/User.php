@@ -13,12 +13,6 @@ class User extends \core\Controller
         CoreContext::getInstance()->getRouter()->redirectTo('/');
     }
 
-//    public function showallAction()
-//    {
-//        $this->jsonData = \core\DB::run("SELECT * FROM users")->fetchAll();
-//        $this->json();
-//    }
-    
     public function loginAction()
     {
         $this->pageTitle = 'Sign In';

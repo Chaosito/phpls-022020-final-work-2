@@ -1,6 +1,6 @@
 {% include 'header.twig' %}
 
-{% set sortBy = view.sorting | upper == 'DESC' ? 'ASC' : 'DESC' %}
+{% set sortBy = (view.sorting == 'DESC') ? 'ASC' : 'DESC' %}
 {% set linkVal = sortBy == 'ASC' ? '&uarr;' : '&darr;' %}
 
 <table border="1" cellspacing="1">

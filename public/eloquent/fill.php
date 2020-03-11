@@ -7,6 +7,7 @@ $faker = Faker\Factory::create('ru_RU');
 for ($i = 0; $i < 30; $i++) {
     $user = new User();
     $user->mail = $faker->email;
+    $user->salt = 1234;
     $user->pass_hash = $faker->password();
     $user->first_name = $faker->firstName;
     $user->description = $faker->text;

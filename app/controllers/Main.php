@@ -1,9 +1,9 @@
 <?php
 namespace app\controllers;
 
+use core\Context;
 use core\Context as CoreContext;
 use core\ImageFaker;
-use core\models\UserMapper;
 use core\Security;
 use Faker;
 
@@ -30,53 +30,69 @@ class Main extends \core\Controller
         $this->pageTitle = 'All Users';
         $requestVars = CoreContext::getInstance()->getRequest()->getRequestHttpVars();
 
-        $objUser = new \app\models\User();
-        $users = $objUser->getAllUsers($requestVars['sort']);
+        $sorting = (!isset($requestVars['sort']) || !in_array(strtoupper($requestVars['sort']), ['ASC', 'DESC']))
+            ? 'ASC'
+            : $requestVars['sort'];
+
+        $users = \app\emodels\User::query()->selectRaw('
+            id, mail, first_name, birthdate, 
+            IF(
+                MONTH(NOW()) < MONTH(birthdate) OR 
+                (MONTH(NOW()) = MONTH(birthdate) AND DAY(NOW()) < DAY(birthdate)), 
+                YEAR(NOW()) - YEAR(birthdate) - 1, 
+                YEAR(NOW()) - YEAR(birthdate)
+            ) AS ages
+        ')->orderBy('birthdate', $sorting)->get();
+
+        $this->view->sorting = $sorting;
         $this->view->users = $users;
-        $this->view->sorting = $requestVars['sort'];
     }
 
     public function fakerAction()
     {
-//        $this->render = false;
         $this->pageTitle = 'Fake data generator';
         $faker = Faker\Factory::create(self::FAKER_LOCALE);
         $usersForView = [];
 
         for ($i = 0; $i < self::FAKE_USERS_COUNT; $i++) {
-            $emulatedForm['mail'] = $faker->email;
-            $emulatedForm['password'] = $faker->password(self::FAKE_PASS_LENGTH_MIN, self::FAKE_PASS_LENGTH_MAX);
-            $emulatedForm['first_name'] = $faker->firstName;
-            $emulatedForm['description'] = $faker->realText(self::FAKE_USER_DESCR_LENGTH);
-            $emulatedForm['birthdate'] = $faker->dateTime()->format('d.m.Y');
-            $objUser = new \app\models\User();
-            $objUser->fillFromForm($emulatedForm);
-            $userMapper = new UserMapper();
-            $userMapper->save($objUser);
+            $user = new \app\emodels\User();
+            $user->mail = $faker->email;
+            $userPassword = $faker->password(self::FAKE_PASS_LENGTH_MIN, self::FAKE_PASS_LENGTH_MAX);
+            $user->setNewPassword($userPassword);
+            $user->first_name = $faker->firstName;
+            $user->description = $faker->realText(self::FAKE_USER_DESCR_LENGTH);
+            $user->birthdate = $faker->dateTime()->format('Y-m-d');
+            $user->save();
 
             $imagesCount = mt_rand(0, self::FAKE_IMAGES_PER_USER_MAX);
 
             $lastFileId = 0;
             for ($j = 0; $j < $imagesCount; $j++) {
                 $imageFaker = new ImageFaker(self::FAKE_IMG_WIDTH, self::FAKE_IMG_HEIGHT);
-                $tempPathForImage = sys_get_temp_dir().DIRECTORY_SEPARATOR.Security::generateString('filename', 20);
-                $imageFaker->saveTo($tempPathForImage);
 
-                $emulatedFile['name'] = "ImageName_{$j}.jpg";
-                $emulatedFile['type'] = 'image/jpeg';
-                $emulatedFile['tmp_name'] = $tempPathForImage;
-                $emulatedFile['error'] = 0;
-                $emulatedFile['size'] = filesize($tempPathForImage);
 
-                $objFile = new \core\File($emulatedFile);
-                $objFile->setOwnerId($userMapper->getId());
-                $objFile->moveUploadedFile();
-                $lastFileId = $objFile->saveToDb();
+                $newFileName = Security::generateString('filename', 32);
+                $pathForImage = "uploads/{$newFileName}.jpg";
+
+                $imageFaker->saveTo(Context::getInstance()->getProjectPath().'public/'.$pathForImage);
+
+                $file = new \app\emodels\Photo();
+                $file->user_id = $user->id;
+                $file->file_path = $pathForImage;
+                $file->file_name = "ImageName_{$j}.jpg";
+                $file->mime_type = "image/jpeg";
+                $file->save();
+                $lastFileId = $file->id;
             }
+
+            if ($imagesCount > 0) {
+                $user->avatar_id = $lastFileId;
+                $user->save();
+            }
+
             $usersForView[] = array(
-                $emulatedForm['first_name'], $emulatedForm['mail'], $emulatedForm['password'], $imagesCount
+                $user->first_name, $user->mail, $userPassword, $imagesCount
             );
-            $objUser->updateAvatarId($lastFileId);
         }
         $this->view->usersData = $usersForView;
     }

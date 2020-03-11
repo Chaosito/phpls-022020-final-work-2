@@ -29,22 +29,6 @@ $capsule->setAsGlobal();
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
 
-class User extends Illuminate\Database\Eloquent\Model
-{
-    public $table = 'users';
-    protected $primaryKey = 'id';
-//    protected $connection;
 
-    public function photos()
-    {
-        return $this->hasMany(Photo::class, 'user_id', 'id');
-    }
-}
 
-class Photo extends Illuminate\Database\Eloquent\Model
-{
-    public function userdata()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-}
+

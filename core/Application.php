@@ -3,6 +3,7 @@ namespace core;
 
 use \core\exceptions\Error404;
 use core\models\CurrentUser;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Application
 {
@@ -18,7 +19,26 @@ class Application
         $this->context->setRequest($request);
         $this->context->setRouter($router);
         $this->context->setCurrentUser($curUser);
-    }
+
+        /* Eloquent connection settings & initialize */
+        $capsule = new Capsule;
+        $capsule->addConnection([
+            'driver'    => 'mysql',
+            'host'      => Settings::MYSQL_HOST,
+            'database'  => Settings::MYSQL_DB,
+            'username'  => Settings::MYSQL_USER,
+            'password'  => Settings::MYSQL_PASS,
+            'charset'   => Settings::MYSQL_CHAR,
+            'collation' => 'utf8_general_ci',
+            'prefix'    => '',
+        ]);
+
+        // Make this Capsule instance available globally via static methods... (optional)
+        $capsule->setAsGlobal();
+
+        // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+        $capsule->bootEloquent();
+}
     
     public function run()
     {
