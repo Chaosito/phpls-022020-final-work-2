@@ -9,7 +9,8 @@
         "ext-json": "*",
         "ext-fileinfo": "*",
         "fzaninotto/faker": "^1.9",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "illuminate/database": "^7.1"
     },
     "autoload": {
         "psr-4": {
