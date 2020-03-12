@@ -2,6 +2,7 @@
 namespace core;
 
 use core\models\CurrentUser;
+use core\models\CurUser;
 use core\models\User;
 
 class Context
@@ -10,7 +11,8 @@ class Context
     private $request;
     private $router;
     private $curUser;
-    
+    private $curUser2;
+
     private function __construct()
     {
     }
@@ -47,14 +49,17 @@ class Context
         $this->router = $router;
     }
 
-    public function getCurrentUser(): CurrentUser
+    public function getCurrentUser()
     {
-        return $this->curUser;
+        if ($this->curUser2) {
+            return $this->curUser2;
+        }
+        return false;
     }
 
-    public function setCurrentUser(CurrentUser $curUser): void
+    public function setCurrentUser(CurUser $curUser): void
     {
-        $this->curUser = $curUser;
+        $this->curUser2 = $curUser;
     }
 
     public function getProjectPath()

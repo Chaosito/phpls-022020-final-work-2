@@ -31,4 +31,9 @@ class User extends \Illuminate\Database\Eloquent\Model
         $this->salt = CoreSecurity::generateString();
         $this->pass_hash = CoreSecurity::generatePasshash($this->salt, $password);
     }
+
+    public function matchPassword($password)
+    {
+        return ($this->pass_hash == CoreSecurity::generatePasshash($this->salt, $password));
+    }
 }

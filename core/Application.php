@@ -2,24 +2,16 @@
 namespace core;
 
 use \core\exceptions\Error404;
-use core\models\CurrentUser;
+use core\models\CurUser;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Application
 {
     /** @var Context */
     private $context;
-    
-    protected function init()
-    {
-        $request = new Request();
-        $router = new Router();
-        $curUser = new CurrentUser();
-        $this->context = Context::getInstance();
-        $this->context->setRequest($request);
-        $this->context->setRouter($router);
-        $this->context->setCurrentUser($curUser);
 
+    protected function initDb()
+    {
         /* Eloquent connection settings & initialize */
         $capsule = new Capsule;
         $capsule->addConnection([
@@ -38,7 +30,22 @@ class Application
 
         // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
         $capsule->bootEloquent();
-}
+    }
+
+
+    protected function init()
+    {
+        $request = new Request();
+        $router = new Router();
+        $this->context = Context::getInstance();
+        $this->context->setRequest($request);
+        $this->context->setRouter($router);
+        $this->initDb();
+        $curUser = CurUser::init();
+        if ($curUser) {
+            $this->context->setCurrentUser($curUser);
+        }
+    }
     
     public function run()
     {
@@ -62,8 +69,8 @@ class Application
 
         $view = new View();
 
-//         connects header & footer via this theme
-//         $view->setTheme('default');
+        //connects header & footer via this theme
+        //$view->setTheme('default');
 
         $controllerObj->view = $view;
         $controllerObj->doFirst();

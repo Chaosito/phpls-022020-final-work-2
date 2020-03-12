@@ -22,14 +22,4 @@ class Request
     {
         return $this->actionName;
     }
-    
-    public function getRequestHttpVars()
-    {
-        return $_REQUEST;
-    }
-    
-    public function getFilesHttpVars()
-    {
-        return $_FILES;
-    }
 }

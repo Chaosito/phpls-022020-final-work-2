@@ -48,14 +48,16 @@ class View
 
             /** @var \Twig\Environment $twig */
             $twig = new \Twig\Environment($loader, [
-                 'debug' => true,
+                'debug' => (bool)Settings::DEBUG_MODE,
                 [
                     'cache' => $this->pathToTemplates . '_twig_cache',
-                    'autoescape' => false
+                    'autoescape' => true
                 ]
             ]);
 
-            $twig->addExtension(new \Twig\Extension\DebugExtension());
+            if (Settings::DEBUG_MODE) {
+                $twig->addExtension(new \Twig\Extension\DebugExtension());
+            }
 
             return $twig;
 

@@ -2,7 +2,9 @@
 namespace app\controllers;
 
 use core\Context;
-use Intervention\Image\ImageManager;
+use core\models\InputFile;
+use core\util\globals\AdapterFiles;
+use core\util\globals\GlobalsFactory;
 
 class Photo extends \core\Controller
 {
@@ -14,39 +16,37 @@ class Photo extends \core\Controller
     public function uploadAction()
     {
         $this->pageTitle = 'Upload photos';
-        $filesVars = Context::getInstance()->getRequest()->getFilesHttpVars();
-        $arrPhoto = $filesVars['photo'];
 
-        if (!isset($arrPhoto['name'][0]) || !count($arrPhoto['name'])) {
+        GlobalsFactory::init(new AdapterFiles());
+        $files = GlobalsFactory::get('photo');
+
+        if (!isset($files['name'][0]) || !count($files['name'])) {
             return false;
         }
 
-        $imagesCount = count($arrPhoto['name']);
         $uploadErrors = [];
         $successMessages = [];
-        $lastFileId = 0;
-        for ($i = 0; $i < $imagesCount; $i++) {
-            // create valid array
+        $lastSuccessUploadedFileId = 0;
+        for ($i = 0; $i < count($files['name']); $i++) {
+            $f = new InputFile($files, $i);
+            $f->setAllowedExtensions(['jpg', 'jpeg', 'png']);
 
-            $arrFile = [];
-            foreach ($arrPhoto as $param => $value) {
-                $arrFile[$param] = $value[$i];
-            }
-
-            $objFile = new \core\File($arrFile);
-
-            if ($objFile->isSended()) {
-                $validFile = $objFile->validate();
-                if (!$validFile) {
-                    $uploadErrors = array_merge($uploadErrors, $objFile->getUploadErrors());
+            if ($f->isSended()) {
+                if (!$f->validate()) {
+                    $uploadErrors = array_merge($uploadErrors, $f->getUploadErrors());
                 } else {
-                    $objFile->setOwnerId($this->curUser->getId());
-                    $objFile->moveUploadedFile();
-                    $lastFileId = $objFile->saveToDb();
-                    $successMessages[] = "Файл `".$objFile->getName()."` загружен успешно!";
+                    if ($f->isSended() && $f->genFileNameAndMoveTo('uploads')) {
+                        $p = new \app\emodels\Photo();
+                        $p->user_id = $this->curUser->id;
+                        $p->file_path = $f->newFilePath;
+                        $p->file_name = $f->name;
+                        $p->mime_type = $f->type;
+                        $p->save();
+                        $lastSuccessUploadedFileId = $p->id;
+                    }
+                    $successMessages[] = "Файл `".$f->name."` загружен успешно!";
                 }
             }
-            unset($arrFile, $objFile, $validFile);
         }
 
         if (count($uploadErrors)) {
@@ -55,7 +55,8 @@ class Photo extends \core\Controller
 
         if (count($successMessages)) {
             $this->view->successMessages = $successMessages;
-            $this->curUser->updateAvatarId($lastFileId);
+            $this->curUser->avatar_id = $lastSuccessUploadedFileId;
+            $this->curUser->save();
         }
     }
 }

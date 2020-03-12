@@ -8,10 +8,11 @@
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
-{{ view.curUser.avatarId ? "<img id='user-avatar' src='/#{view.curUser.avatarPath}' />" | raw}}<h1>{{ pageTitle }}</h1>
+
+{{ view.curUser.avatar_id ? "<img id='user-avatar' src='/#{view.curUser.avatar.file_path}' />" | raw}}<h1>{{ pageTitle }}</h1>
 
 <a href="/">Main</a> |
-{% if view.curUser.isLogged() %}
+{% if view.curUser %}
     <a href="/logout">Logout</a> |
     <a href="/profile">My profile</a> |
     <a href="/main/allusers">All users</a> |
@@ -21,6 +22,7 @@
     <a href="/register">Sign up</a> |
 {% endif %}
 <a href="/main/faker" title="Может занять продолжительное время, т.к. получает изобрежения по сети">Fill DB</a> |
+<a href="/main/migration">Migration</a> |
 <a href="/not_found">404 Page</a><hr>
 
 <style>

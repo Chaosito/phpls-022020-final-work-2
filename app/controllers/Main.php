@@ -5,7 +5,12 @@ use core\Context;
 use core\Context as CoreContext;
 use core\ImageFaker;
 use core\Security;
+use core\util\globals\AdapterGet;
+use core\util\globals\GlobalsFactory;
 use Faker;
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Schema\Blueprint;
 
 class Main extends \core\Controller
 {
@@ -28,12 +33,16 @@ class Main extends \core\Controller
     public function allusersAction()
     {
         $this->pageTitle = 'All Users';
-        $requestVars = CoreContext::getInstance()->getRequest()->getRequestHttpVars();
 
-        $sorting = (!isset($requestVars['sort']) || !in_array(strtoupper($requestVars['sort']), ['ASC', 'DESC']))
+        GlobalsFactory::init(new AdapterGet());
+        $sort = GlobalsFactory::get('sort');
+
+        $sorting = (empty($sort) || !in_array(strtoupper($sort), ['ASC', 'DESC']))
             ? 'ASC'
-            : $requestVars['sort'];
+            : $sort;
 
+        // Здесь можно было бы получить просто дату, потом средствами пхп получить возраст,
+        // Но, такой вариант в виде SQL - 100% будет быстрее, хоть и не так красив.
         $users = \app\emodels\User::query()->selectRaw('
             id, mail, first_name, birthdate, 
             IF(
@@ -95,5 +104,32 @@ class Main extends \core\Controller
             );
         }
         $this->view->usersData = $usersForView;
+    }
+
+    public function migrationAction()
+    {
+
+        Capsule::schema()->dropIfExists('users');
+
+        Capsule::schema()->create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('avatar_id')->default(0)->unsigned();
+            $table->string('mail', 50)->unique();
+            $table->string('pass_hash', 40);
+            $table->string('salt', 4);
+            $table->string('first_name', 20);
+            $table->string('description')->nullable();
+            $table->date('birthdate')->nullable();
+        });
+
+        Capsule::schema()->dropIfExists('photos');
+
+        Capsule::schema()->create('photos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->default(0)->unsigned();
+            $table->string('file_path');
+            $table->string('file_name')->nullable();
+            $table->string('mime_type')->nullable();
+        });
     }
 }

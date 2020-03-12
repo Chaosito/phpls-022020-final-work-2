@@ -2,7 +2,7 @@
 
 <b>Id:</b> {{ view.curUser.id }}<br>
 <b>Mail:</b> {{ view.curUser.mail }}<br>
-<b>Name:</b> {{ view.curUser.firstName }}<br>
+<b>Name:</b> {{ view.curUser.first_name }}<br>
 <b>Descr:</b> {{ view.curUser.description }}<br>
 <b>Birthdate:</b> {{ view.curUser.birthdate }}<br><br>
 
@@ -10,7 +10,7 @@
 
 <div class="container-photos">
     {% for photo in view.photos %}
-        <div><a href="{{ photo.file_path }}" target="_blank"><img src="{{ photo.thumb_path }}" /></a></div>
+        <div><a href="{{ photo.file_path }}" target="_blank"><img src="{{ photo.file_path }}" /></a></div>
     {% endfor %}
 </div>
 
@@ -20,6 +20,9 @@
     }
     .container-photos > div {
         display: inline-block;
+    }
+    .container-photos > div > a > img {
+        width:200px;
     }
 </style>
 
