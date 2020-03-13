@@ -1,0 +1,57 @@
+/*
+    Header, Footer, Main-Menu
+ */
+div#main-menu {
+    background-color: #D8E6F3;
+    width:100%;
+    padding:10px;
+}
+
+div#main-menu > a {
+    text-decoration: none;
+    padding:10px;
+    display: inline-block;
+    border-radius: 3px;
+}
+div#main-menu > a:hover {
+    background-color: #AFCDE7;
+}
+
+img#user-avatar {
+    width: 48px;
+    height: 48px;
+}
+/*
+    Additional global features (tables, blocks, etc)
+ */
+table.typical-table {
+    font-family: sans-serif;
+    font-size: 14px;
+    border-collapse: collapse;
+}
+table.typical-table th, table.typical-table td:first-child {
+    background: #AFCDE7;
+    color: #000;
+    padding: 10px 20px;
+}
+table.typical-table th > a {
+    text-decoration: none;
+}
+table.typical-table td {
+    background: #D8E6F3;
+    padding: 10px;
+}
+
+/* -- */
+
+div.block-msg {
+    padding:10px;
+}
+
+div.block-errors {
+    color:red;
+}
+
+div.block-success {
+    color:green;
+}

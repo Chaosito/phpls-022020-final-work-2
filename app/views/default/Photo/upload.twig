@@ -1,7 +1,7 @@
 {% include 'header.twig' %}
 
 {% if view.viewErrors %}
-    <div class="block-errors">
+    <div class="block-msg block-errors">
         {% for error in view.viewErrors %}
             <div>• {{ error }}</div>
         {% endfor %}
@@ -9,7 +9,7 @@
 {% endif %}
 
 {% if view.successMessages %}
-    <div class="block-success">
+    <div class="block-msg block-success">
         {% for msg in view.successMessages %}
             <div>• {{ msg }}</div>
         {% endfor %}
@@ -35,28 +35,6 @@
         </tfoot>
     </table>
 </form>
-
-<script>
-    $(document).ready(function() {
-        $('form').on('change', 'input[name^=photo]', function(event) {
-            event.preventDefault();
-            if ($('input[name^=photo]:last').val() != '') {
-                let newButton = '<tr><td><input type="file" name="photo[]" multiple="multiple"></td></tr>';
-                $(this).parent().parent().parent().append(newButton);
-            }
-        });
-    })
-</script>
-
-<style>
-    div.block-errors {
-        color:red;
-        padding:10px;
-    }
-    div.block-success {
-        color:green;
-        padding:10px;
-    }
-</style>
+<script src='/js/default/user-upload.js' type='text/javascript'></script>
 
 {% include 'footer.twig' %}

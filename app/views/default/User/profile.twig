@@ -1,4 +1,5 @@
 {% include 'header.twig' %}
+<link href='/css/default/user-profile.css' rel='stylesheet' type='text/css'/>
 
 <b>Id:</b> {{ view.curUser.id }}<br>
 <b>Mail:</b> {{ view.curUser.mail }}<br>
@@ -13,18 +14,5 @@
         <div><a href="{{ photo.file_path }}" target="_blank"><img src="{{ photo.file_path }}" /></a></div>
     {% endfor %}
 </div>
-
-<style>
-    .container-photos {
-        width:1000px;
-    }
-    .container-photos > div {
-        display: inline-block;
-    }
-    .container-photos > div > a > img {
-        max-width: 200px;
-        max-height: 100px;
-    }
-</style>
 
 {% include 'footer.twig' %}

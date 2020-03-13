@@ -6,33 +6,26 @@
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" media="screen" rel="stylesheet" type="text/css" >
     <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link href='/css/default/global.css' rel='stylesheet' type='text/css'/>
 </head>
 <body>
 
 {{ view.curUser.avatar_id ? "<img id='user-avatar' src='/#{view.curUser.avatar.file_path}' />" | raw}}<h1>{{ pageTitle }}</h1>
 
-<a href="/">Main</a> |
-{% if view.curUser %}
-    <a href="/admin">Admin</a> |
-    <a href="/logout">Logout</a> |
-    <a href="/profile">My profile</a> |
-    <a href="/main/allusers">All users</a> |
-    <a href="/photo/upload">Upload a photo</a> |
-{% else %}
-    <a href="/login">Sign in</a> |
-    <a href="/register">Sign up</a> |
-{% endif %}
-<a href="/main/faker" title="Может занять продолжительное время, т.к. получает изобрежения по сети">Fill DB</a> |
-<a href="/main/migration">Migration</a> |
-<a href="/not_found">404 Page</a><hr>
-
-<style>
-    a {
-        text-decoration: none;
-    }
-
-    img#user-avatar {
-        width: 48px;
-        height: 48px;
-    }
-</style>
+<div id="main-menu">
+    <a href="/">Main</a> |
+    {% if view.curUser %}
+        <a href="/admin">Admin</a> |
+        <a href="/logout">Logout</a> |
+        <a href="/profile">My profile</a> |
+        <a href="/main/allusers">All users</a> |
+        <a href="/photo/upload">Upload a photo</a> |
+    {% else %}
+        <a href="/login">Sign in</a> |
+        <a href="/register">Sign up</a> |
+    {% endif %}
+    <a href="/main/faker" title="Может занять продолжительное время, т.к. получает изобрежения по сети">Fill DB</a> |
+    <a href="/main/migration">Migration</a> |
+<a href="/not_found">404 Page</a>
+</div>
+<br>
