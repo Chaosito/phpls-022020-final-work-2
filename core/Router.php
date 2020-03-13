@@ -24,7 +24,10 @@ class Router
             ],
             'Profile' => [
                 'index' => 'User.profile'
-            ]
+            ],
+            'Admin' => [
+                'index' => 'Admin.index'
+            ],
         ];
     }
     
