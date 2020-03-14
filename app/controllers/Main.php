@@ -108,7 +108,7 @@ class Main extends \core\Controller
 
     public function migrationAction()
     {
-
+        $this->render = false;
         Capsule::schema()->dropIfExists('users');
 
         Capsule::schema()->create('users', function (Blueprint $table) {
@@ -131,5 +131,6 @@ class Main extends \core\Controller
             $table->string('file_name')->nullable();
             $table->string('mime_type')->nullable();
         });
+        Context::getInstance()->getRouter()->redirectTo('/');
     }
 }
