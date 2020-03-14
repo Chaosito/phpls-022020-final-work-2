@@ -142,7 +142,7 @@ class User extends \core\Controller
                 $p->mime_type = $f->type;
                 $p->save();
             }
-            $u->avatar_id = $p->id;
+            $u->avatar_id = (int)$p->id;
             $u->save();
 
             // Можно сразу авторизовать, как на всех современных сайтах, но мы не будем этого делать
