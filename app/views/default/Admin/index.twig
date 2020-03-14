@@ -1,6 +1,6 @@
 {% include 'header.twig' %}
 
-<form method="POST" action="/admin/saveusers">
+<form method="POST" action="/admin/saveusers" autocomplete="off">
     <table border="1" cellspacing="0" class="typical-table" id="tbl-admin-users">
         <thead>
         <tr>
@@ -23,7 +23,7 @@
                     <td><input type="text" value="{{ user.description|e }}" name="description[user_{{ user.id }}]" maxlength="255" /></td>
                     <td><input type="text" value="{{ user.birthdate|e }}" name="birthdate[user_{{ user.id }}]" maxlength="10" /></td>
                     <td><input type="text" value="" name="password[user_{{ user.id }}]" maxlength="255" placeholder="New password" /></td>
-                    <td style="text-align: center;"><label><input type="checkbox" value="1" name="remove[user_{{ user.id }}]" /> DELETE</label></td>
+                    <td><label><input type="checkbox" value="1" name="remove[user_{{ user.id }}]" /> DELETE</label></td>
                 </tr>
             {% endfor %}
         {% endif %}
@@ -31,31 +31,11 @@
         <tfoot>
             <tr>
                 <td colspan="7">
-                    <input style="float:right;" type="submit" value="Save" />
+                    <input type="submit" value="Save" />
                     <input type="button" id="btn-add-user" value="Add user" />
                 </td>
             </tr>
         </tfoot>
     </table>
 </form>
-<script>
-    $(document).ready(function(){
-        function getTdInput(name, maxLen = '', pHolder = '') {
-            if (maxLen) maxLen = "maxlength='" + maxLen + "'";
-            if (pHolder) pHolder = "placeholder='" + pHolder + "'";
-            return "<td><input type='text' name='" + name + "' " + maxLen + pHolder + "/></td>";
-        }
-
-        $('#btn-add-user').click(function(){
-            $('#tbl-admin-users tbody').append('<tr><td>*</td>' +
-                getTdInput('mail[]', 50, 'E-mail') +
-                getTdInput('first_name[]', 20, 'First name') +
-                getTdInput('description[]', 255, 'Description') +
-                getTdInput('birthdate[]', 10, 'Birthdate') +
-                getTdInput('password[]', 255, 'New password') +
-                '<td></td>' +
-            '</tr>');
-        })
-    });
-</script>
 {% include 'footer.twig' %}

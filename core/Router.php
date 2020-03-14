@@ -9,7 +9,8 @@ class Router
     
     private $controllerName;
     private $actionToken;
-    
+    private $stylesScriptsFileName;
+
     protected function getRoutes()
     {
         return [
@@ -50,6 +51,8 @@ class Router
         if (isset($customRoute)) {
             list($this->controllerName, $this->actionToken) = explode(".", $customRoute, 2);
         }
+
+        $this->stylesScriptsFileName = strtolower("{$this->controllerName}-{$this->actionToken}");
     }
     
     private function checkParam(string $key)
@@ -75,6 +78,11 @@ class Router
     public function getActionToken()
     {
         return $this->actionToken;
+    }
+
+    public function getStylesScriptsFileName()
+    {
+        return $this->stylesScriptsFileName;
     }
     
     public function redirectTo($toUrl)

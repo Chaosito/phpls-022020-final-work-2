@@ -68,6 +68,17 @@ class View
 
     public function render()
     {
+
+        // Prepare js & css for custom pages
+        $stylesScriptsFileName = Context::getInstance()->getRouter()->getStylesScriptsFileName();
+        $pageStylesheets = "css/{$this->currentTheme}/{$stylesScriptsFileName}.css";
+        $pageStylesheets = file_exists($pageStylesheets) ? "/{$pageStylesheets}" : "";
+        $this->data['page_css'] = $pageStylesheets;
+        $pageScripts = "js/{$this->currentTheme}/{$stylesScriptsFileName}.js";
+        $pageScripts = file_exists($pageScripts) ? "/{$pageScripts}" : "";
+        $this->data['page_js'] = $pageScripts;
+
+
         $twig = $this->getTwig();
 
         if (empty($this->templateFile)) {
