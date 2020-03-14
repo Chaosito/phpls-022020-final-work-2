@@ -17,5 +17,4 @@ class AdapterCookie implements GlobalsInterface
     {
         setcookie($indexName, '', 0, "/");
     }
-
 }

@@ -17,5 +17,4 @@ class AdapterSession implements GlobalsInterface
     {
         unset($_SESSION[$indexName]);
     }
-
 }

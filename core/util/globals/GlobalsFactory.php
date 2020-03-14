@@ -27,7 +27,6 @@ class GlobalsFactory
             return self::$adapter->remove($indexName);
         } else {
             return self::set($indexName, null);
-
         }
     }
 }

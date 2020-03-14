@@ -60,7 +60,6 @@ class View
             }
 
             return $twig;
-
         } catch (\Exception $e) {
             print 'err'.$e->getMessage();
         }
@@ -82,7 +81,11 @@ class View
         $twig = $this->getTwig();
 
         if (empty($this->templateFile)) {
-            $this->templateFile = Context::getInstance()->getRouter()->getControllerName().DIRECTORY_SEPARATOR.Context::getInstance()->getRouter()->getActionToken().'.twig';
+            $this->templateFile =
+                Context::getInstance()->getRouter()->getControllerName().
+                DIRECTORY_SEPARATOR.
+                Context::getInstance()->getRouter()->getActionToken().
+                '.twig';
         }
 
         ob_start();

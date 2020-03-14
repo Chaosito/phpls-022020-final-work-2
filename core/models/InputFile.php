@@ -34,7 +34,6 @@ class InputFile
             $this->tmp_name = $fileArray['tmp_name'][$fileIndex];
             $this->error = $fileArray['error'][$fileIndex];
             $this->size = $fileArray['size'][$fileIndex];
-
         } else {
             // Файл не является массивом, соответственно передан без multiple и $fileIndex нам не нужен
             $this->name = $fileArray['name'];
@@ -100,6 +99,9 @@ class InputFile
         $newName = CoreSecurity::generateString('filename', self::LENGTH_OF_NEW_NAME_FILE).'.'.$this->extension;
         $this->newFilePath = $moveToDirectory.DIRECTORY_SEPARATOR.$newName;
 
-        return move_uploaded_file($this->tmp_name, Context::getInstance()->getProjectPath().'public'.DIRECTORY_SEPARATOR.$this->newFilePath);
+        return move_uploaded_file(
+            $this->tmp_name,
+            Context::getInstance()->getProjectPath().'public'.DIRECTORY_SEPARATOR.$this->newFilePath
+        );
     }
 }

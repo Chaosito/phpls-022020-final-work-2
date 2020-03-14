@@ -42,7 +42,7 @@ class Admin extends \core\Controller
         $arrPasswords = GlobalsFactory::get('password');
         $arrForRemove = GlobalsFactory::get('remove');
 
-        foreach($arrMails as $key => $mail) {
+        foreach ($arrMails as $key => $mail) {
             // Здесь должна быть просто тьма проверок, на существование такого юзера, емаила, правильность пароля итд
             // Но проект у нас тестовый, так что для ускорения сделаем все по простому
 
