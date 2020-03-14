@@ -2,16 +2,27 @@
 namespace app\controllers;
 
 use core\Context;
+use core\Datetime;
 use core\util\globals\AdapterPost;
 use core\util\globals\GlobalsFactory;
 use app\emodels\User as EUser;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Admin extends \core\Controller
 {
     public function indexAction()
     {
         $this->pageTitle = 'Admin page';
-        $users = EUser::query()->orderBy('id')->get();
+
+        $userFields = [
+            'id',
+            'mail',
+            'first_name',
+            'description',
+            DB::connection()->raw('DATE_FORMAT(birthdate, "%d.%m.%Y") AS birthdate')
+        ];
+
+        $users = EUser::query()->select($userFields)->orderBy('id')->get();
         $this->view->users = $users;
     }
 
@@ -40,7 +51,7 @@ class Admin extends \core\Controller
                 $user->mail = $mail;
                 $user->first_name = $arrNames[$key];
                 $user->description = $arrDescriptions[$key];
-                $user->birthdate = $arrBirthdates[$key];
+                $user->birthdate = Datetime::convertDate($arrBirthdates[$key], 'd.m.Y', 'Y-m-d');
                 $user->setNewPassword($arrPasswords[$key]);
                 $user->save();
             } else {
@@ -53,7 +64,7 @@ class Admin extends \core\Controller
                         $user->mail = $mail;
                         $user->first_name = $arrNames[$key];
                         $user->description = $arrDescriptions[$key];
-                        $user->birthdate = $arrBirthdates[$key];
+                        $user->birthdate = Datetime::convertDate($arrBirthdates[$key], 'd.m.Y', 'Y-m-d');
                         if ($arrPasswords[$key] != '') {
                             $user->setNewPassword($arrPasswords[$key]);
                         }
